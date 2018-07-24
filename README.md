@@ -9,4 +9,4 @@ Alternatively, you could manually download the dependencies by firing the follow
 syntax: go get 
     1. github.com/julienschmidt/httprouter
     2. github.com/rs/cors
-3. Run the program by typing 'go run app.go'.
+3. Run the program by navigating to 'main' folder and executing 'go run app.go' command.
