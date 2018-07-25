@@ -14,7 +14,7 @@ type Mail struct {
     Subject string  `json:"subject"`
     To string       `json:"to"`
     From string     `json:"from"`
-    Mail_type string     `json:"type"`
+    Mail_type string `json:"type"`
     Body string     `json:"body"`
     Reply_id int    `json:"reply_id"`
 }

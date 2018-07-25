@@ -138,7 +138,6 @@ func SearchMails(Mail_type string, Search_text string) ([]commons.Mail, error) {
 
 }
 
-//interchange replyid and id everywhere cause id here will the the top most mail hence traverse from end.
 func GetMailById(Id int) (string,error) {
     mails := make([]commons.Mail,0)
     jsonFile, err := os.Open("../files/data.json")
@@ -150,29 +149,30 @@ func GetMailById(Id int) (string,error) {
     byteValue, _ := ioutil.ReadAll(jsonFile)
     json.Unmarshal(byteValue, &mails)
     jsonFile.Close();
+    var mail commons.Mail
 
-    var new_body []string
-    var temp string;
-
-    for i := 0;i < len(mails); i++ {
-    fmt.Println("inside loop")
-        if mails[i].Id == Id && mails[i].Reply_id != 0{
-            temp = "From \n" + mails[i].From + "\n" +
-                    "To \n" + mails[i].To + "\n"  +
-                    "Subject \n" + mails[i].Subject + "\n" +
-                    mails[i].Body + "\n"
-            new_body = append(new_body,temp)
-            Id = mails[i].Reply_id
-        }
-        if mails[i].Id == Id && mails[i].Reply_id != 0{
-            new_body = append(new_body,mails[i].Body)
-            Id = mails[i].Reply_id
+    // assign the actual mail
+    for i := 0;i < len(mails) ; i++  {
+        if mails[i].Id == Id {
+            mail = mails[i]
         }
     }
-     var result string
-    for i := len(new_body)-1; i >=0 ; i-- {
-        result = result + new_body[i];
+    temp := mail.Body
+
+    //append thread mails
+    for i := len(mails)-1;i >= 0; i-- {
+
+        if mails[i].Reply_id == Id {
+            temp +=  "<br/> ---------------------------------------------------------------------------- </br>"
+            temp += "<b>From </b> <br/>" + mails[i].From + "<br/>" +
+                    "<b> To</b>  <br/>" + mails[i].To + "<br/>"  +
+                    "<b> Subject</b>  <br/>" + mails[i].Subject + "<br/>" +
+                    mails[i].Body
+
+            Id = mails[i].Id
+        }
     }
+    result := temp
     return result,nil
 }
 
