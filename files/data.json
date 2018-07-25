@@ -16,5 +16,14 @@
 				"type": "inbox",
 				"body": "Hi! Yes, I'll mail you the same separately",
 				"reply_id": 3
+		},
+		{
+				"id": 3,
+				"subject": "Sample Mail",
+				"to": "senthil@effy.co.in",
+				"from": "utkarsh@effy.co.in",
+				"type": "spam",
+				"body": "test reply feature",
+				"reply_id": 0
 		}
 ]

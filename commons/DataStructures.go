@@ -29,3 +29,11 @@ type ReplyRequest struct {
     Body string `json:"Body"`
 }
 
+type SearchRequest struct {
+    Mail_type string      `json:"mail_type"`
+    Search_text string    `json:"search_text"`
+}
+
+type GetMailByIDRequest struct {
+    Id int `json:"id"`
+}

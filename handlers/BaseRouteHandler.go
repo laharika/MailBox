@@ -17,6 +17,8 @@ func ConfigureRoutes(router *httprouter.Router) error {
     router.POST("/getallmails",GetAllMailsHandler)
     router.POST("/changecategory", ChangeCategoryHandler)
     router.POST("/addreply", AddReplyHandler)
+    router.POST("/searchmails", SearchMailsHandler)
+    router.POST("/getmailbyid", GetMailByIdHandler)
     return nil
 }
 

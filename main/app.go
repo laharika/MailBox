@@ -1,7 +1,7 @@
 package main
 
 import(
-    
+
     "mailbox_server/handlers"
     "github.com/julienschmidt/httprouter"
     "github.com/rs/cors"

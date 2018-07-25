@@ -7,7 +7,7 @@ import (
     "io/ioutil"
     "os"
     "strconv"
-
+    "strings"
 )
 
 func GetAllMails() ([]commons.Mail, error) {
@@ -110,27 +110,69 @@ func AddReply(Id int, Body string) error{
     return nil
 }
 
-/*
-func GetMailById(Id int) (common.Mail) {
+
+func SearchMails(Mail_type string, Search_text string) ([]commons.Mail, error) {
     mails := make([]commons.Mail,0)
     jsonFile, err := os.Open("../files/data.json")
     if err != nil {
         fmt.Println(err)
-        return err
+        return nil,err
     }
     fmt.Println("Opened Successfully !!")
     byteValue, _ := ioutil.ReadAll(jsonFile)
     json.Unmarshal(byteValue, &mails)
     jsonFile.Close();
 
-    new_body := ""
+    var return_list []commons.Mail
+    for i := 0;i < len(mails);i++ {
+        if mails[i].Mail_type == Mail_type && strings.Contains(strings.ToUpper(mails[i].Subject), strings.ToUpper(Search_text)) ||
+        strings.Contains(strings.ToUpper(mails[i].Body), strings.ToUpper(Search_text)) {
+            return_list = append(return_list, mails[i])
+        }
+    }
+    if len(return_list) != 0 {
+        return return_list, nil
+    }
+
+    return mails, nil
+
+}
+
+//interchange replyid and id everywhere cause id here will the the top most mail hence traverse from end.
+func GetMailById(Id int) (string,error) {
+    mails := make([]commons.Mail,0)
+    jsonFile, err := os.Open("../files/data.json")
+    if err != nil {
+        fmt.Println(err)
+        return "",err
+    }
+    fmt.Println("Opened Successfully !!")
+    byteValue, _ := ioutil.ReadAll(jsonFile)
+    json.Unmarshal(byteValue, &mails)
+    jsonFile.Close();
+
+    var new_body []string
+    var temp string;
 
     for i := 0;i < len(mails); i++ {
-        if mails[i].Id == Id {
-            new_body = new_body + mails[i].Body
-            Id = mails[i].Id
+    fmt.Println("inside loop")
+        if mails[i].Id == Id && mails[i].Reply_id != 0{
+            temp = "From \n" + mails[i].From + "\n" +
+                    "To \n" + mails[i].To + "\n"  +
+                    "Subject \n" + mails[i].Subject + "\n" +
+                    mails[i].Body + "\n"
+            new_body = append(new_body,temp)
+            Id = mails[i].Reply_id
         }
-
+        if mails[i].Id == Id && mails[i].Reply_id != 0{
+            new_body = append(new_body,mails[i].Body)
+            Id = mails[i].Reply_id
+        }
     }
+     var result string
+    for i := len(new_body)-1; i >=0 ; i-- {
+        result = result + new_body[i];
+    }
+    return result,nil
 }
-*/
+
